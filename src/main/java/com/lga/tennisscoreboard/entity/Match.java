@@ -26,17 +26,14 @@ public class Match {
     private Long id;
 
     @ManyToOne
-    @Column(name = "player_1")
-    @JoinColumn(name = "player_1", referencedColumnName = "id")
+    @JoinColumn(name = "player_1", referencedColumnName = "id", nullable = false)
     private Player firstPlayer;
 
     @ManyToOne
-    @Column(name = "player_2")
-    @JoinColumn(name = "player_2", referencedColumnName = "id")
+    @JoinColumn(name = "player_2", referencedColumnName = "id", nullable = false)
     private Player secondPlayer;
 
     @ManyToOne
-    @Column(name = "winner")
-    @JoinColumn(name = "winner", referencedColumnName = "id")
+    @JoinColumn(name = "winner", referencedColumnName = "id", nullable = false)
     private Player winner;
 }
