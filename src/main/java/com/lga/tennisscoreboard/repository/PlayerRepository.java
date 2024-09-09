@@ -5,6 +5,10 @@ import org.hibernate.Session;
 
 public class PlayerRepository extends BaseRepository<Long, Player> {
 
+    public PlayerRepository() {
+        super(Player.class);
+    }
+
     public Player findPlayerByName(String playerName) {
         try (Session session = getSessionFactory().openSession()) {
             session.beginTransaction();
@@ -17,4 +21,5 @@ public class PlayerRepository extends BaseRepository<Long, Player> {
             return player;
         }
     }
+
 }

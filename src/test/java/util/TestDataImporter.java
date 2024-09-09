@@ -28,8 +28,10 @@ public class TestDataImporter {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            session.createNativeQuery("TRUNCATE TABLE matches RESTART IDENTITY CASCADE", Match.class).executeUpdate();
-            session.createNativeQuery("TRUNCATE TABLE players RESTART IDENTITY CASCADE", Player.class).executeUpdate();
+            session.createNativeQuery("DELETE FROM matches").executeUpdate();
+            session.createNativeQuery("DELETE FROM players").executeUpdate();
+            session.createNativeQuery("ALTER TABLE matches ALTER COLUMN id RESTART WITH 1").executeUpdate();
+            session.createNativeQuery("ALTER TABLE players ALTER COLUMN id RESTART WITH 1").executeUpdate();
 
             session.getTransaction().commit();
         }
