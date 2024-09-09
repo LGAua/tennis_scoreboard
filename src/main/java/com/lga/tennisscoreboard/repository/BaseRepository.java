@@ -3,8 +3,10 @@ package com.lga.tennisscoreboard.repository;
 import com.lga.tennisscoreboard.entity.BaseEntity;
 import com.lga.tennisscoreboard.util.HibernateUtil;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.internal.SessionImpl;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.hibernate.query.criteria.JpaRoot;
@@ -13,12 +15,13 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 public abstract class BaseRepository<K extends Serializable, E extends BaseEntity<K>> implements DaoCrud<K, E> {
 
     @Getter
     private static SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
 
-    private Class<E> clazz ;
+    private final Class<E> clazz;
 
     @Override
     public Optional<E> findById(K entityId) {
@@ -63,7 +66,7 @@ public abstract class BaseRepository<K extends Serializable, E extends BaseEntit
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Optional<E> entity = findById(entityId);
-            session.remove(entity);
+            entity.ifPresent(e -> session.remove(e));
             session.getTransaction().commit();
         }
     }
@@ -72,7 +75,9 @@ public abstract class BaseRepository<K extends Serializable, E extends BaseEntit
     public void update(E entity) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.merge(entity);
+            if (findById(entity.getId()).isPresent()){
+                session.merge(entity);
+            }
             session.getTransaction().commit();
         }
     }

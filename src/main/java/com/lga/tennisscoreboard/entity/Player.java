@@ -1,19 +1,20 @@
 package com.lga.tennisscoreboard.entity;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import java.util.List;
+
 
 @Data
 @NoArgsConstructor
@@ -21,15 +22,14 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "players")
-public class Player {
+public class Player implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(unique = true, nullable = false)
     private String name;
-
+}
 //    @Transient
 //    private List<Match> matches;
 //
@@ -45,4 +45,3 @@ public class Player {
 //                .setParameter("palyer", this)
 //                .getResultList();
 //    }
-}
