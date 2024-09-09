@@ -1,20 +1,16 @@
-package com.lga.tennisscoreboard.repository;
+package repository;
 
 import com.lga.tennisscoreboard.entity.Player;
-import org.junit.jupiter.api.AfterAll;
+import com.lga.tennisscoreboard.repository.PlayerRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
 import util.TestDataImporter;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
