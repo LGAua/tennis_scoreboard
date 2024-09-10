@@ -1,6 +1,7 @@
 package com.lga.tennisscoreboard.servlet;
 
 import com.lga.tennisscoreboard.dto.MatchDto;
+import com.lga.tennisscoreboard.service.FinishedMatchesPersistenceService;
 import com.lga.tennisscoreboard.service.MatchCalculationService;
 import com.lga.tennisscoreboard.service.OngoingMatchesService;
 import jakarta.servlet.ServletException;
@@ -16,6 +17,7 @@ import java.util.UUID;
 public class MatchScoreServlet extends HttpServlet {
     private final OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
     private final MatchCalculationService matchCalculationService = new MatchCalculationService();
+    private final FinishedMatchesPersistenceService matchesPersistenceService = new FinishedMatchesPersistenceService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,11 +31,16 @@ public class MatchScoreServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
         MatchDto match = ongoingMatchesService.getMatch(uuid);
-        addPoint(req,match);
-        req.setAttribute("uuid", uuid);
-        req.setAttribute("match", ongoingMatchesService.getMatch(uuid));
 
-        req.getRequestDispatcher("/WEB-INF/match-score.jsp").forward(req, resp);
+        addPoint(req,match);
+
+        if (match.getWinner() == null){
+            req.setAttribute("uuid", uuid);
+            req.setAttribute("match", match);
+            req.getRequestDispatcher("/WEB-INF/match-score.jsp").forward(req, resp);
+        } else {
+
+        }
     }
 
     private MatchDto addPoint(HttpServletRequest req, MatchDto match) {

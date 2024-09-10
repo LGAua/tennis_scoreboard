@@ -19,4 +19,8 @@ public class OngoingMatchesService {
     public MatchDto getMatch(UUID uuid){
         return MATCHES.get(uuid);
     }
+
+    public void finalizeMatch(UUID uuid){
+        MATCHES.remove(uuid);
+    }
 }

@@ -17,11 +17,19 @@ public class MatchDto {
 
     Player playerTwo;
 
+    Player winner;
+
     int currentSet;
+
+    int currentGame;
 
     int scorePlayerOne;
 
     int scorePlayerTwo;
+
+    int gameWinsByPlayerOne;
+
+    int gameWinsByPlayerTwo;
 
     int setWinsByPlayerOne;
 
