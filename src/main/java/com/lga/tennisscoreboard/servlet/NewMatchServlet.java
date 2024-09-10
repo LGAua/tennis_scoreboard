@@ -25,7 +25,6 @@ public class NewMatchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-//        resp.sendRedirect("/WEB-INF/newMatch.jsp");
         req.getRequestDispatcher("/WEB-INF/newMatch.jsp").forward(req, resp);
     }
 
@@ -37,7 +36,6 @@ public class NewMatchServlet extends HttpServlet {
         savePlayer(playerOne);
         savePlayer(playerTwo);
 
-
         MatchDto matchDto = MatchDto.builder()
                 .playerOne(playerOne)
                 .playerTwo(playerTwo)
@@ -45,10 +43,7 @@ public class NewMatchServlet extends HttpServlet {
 
         UUID matchId = ongoingMatchesService.addMatch(matchDto);
 
-        System.out.println("/match-score?uuid=%s".formatted(matchId.toString()));
-
         resp.sendRedirect("/match-score?uuid=%s".formatted(matchId.toString()));
-//        req.getRequestDispatcher("/WEB-INF/match-score.jsp").forward(req, resp);
     }
 
     private Player playerBuilder(String name) {

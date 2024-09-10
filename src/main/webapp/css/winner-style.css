@@ -1,0 +1,89 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.winner-container {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    text-align: center;
+    border: 3px solid #2e7d32;
+    max-width: 400px;
+    width: 100%;
+}
+
+h1 {
+    color: #2e7d32;
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.winner-name {
+    font-size: 24px;
+    color: #1b5e20;
+    font-weight: bold;
+}
+
+.winner-name span {
+    color: #388e3c;
+}
+
+.final-score {
+    font-size: 18px;
+    color: #666;
+    margin: 20px 0;
+    background-color: #e8f5e9;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #2e7d32;
+}
+
+.final-score p {
+    margin: 5px 0;
+}
+
+.new-match-btn {
+    background-color: #2e7d32;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.new-match-btn:hover {
+    background-color: #1b5e20;
+}
+
+.new-match-btn:active {
+    background-color: #004d40;
+}
+
+.matches-btn{
+    background-color: #2e7d32;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.matches-btn:hover {
+    background-color: #1b5e20;
+}
+
+.matches-btn:active {
+    background-color: #004d40;
+}
+
+
