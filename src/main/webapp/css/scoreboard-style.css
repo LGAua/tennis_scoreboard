@@ -1,0 +1,99 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.scoreboard {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 450px;
+    padding: 20px;
+    text-align: center;
+    border: 3px solid #2e7d32;
+}
+
+h2 {
+    color: #2e7d32;
+    margin-bottom: 20px;
+    font-size: 26px;
+}
+
+.player-score {
+    margin-bottom: 20px;
+}
+
+.player-info {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2e7d32;
+    margin-bottom: 10px;
+}
+
+.score, .set, .game {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1b5e20;
+    margin-bottom: 5px;
+}
+
+.match-stats {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #1b5e20;
+}
+
+button:active {
+    background-color: #004d40;
+}
+
+div.player-score:last-child {
+    margin-bottom: 0;
+}
+
+div.player-score {
+    background-color: #e8f5e9;
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #2e7d32;
+}
+
+div.player-score:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.stats-container div {
+    text-align: center;
+}
+
+label {
+    font-size: 14px;
+    color: #4caf50;
+}
