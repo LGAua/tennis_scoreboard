@@ -4,18 +4,16 @@ import com.lga.tennisscoreboard.dto.MatchDto;
 
 public class MatchCalculationService {
 
-    public MatchDto addPointToPlayerOne(MatchDto match) {
+    public void addPointToPlayerOne(MatchDto match) {
         int currentScore = match.getScorePlayerOne();
         match.setScorePlayerOne(currentScore >= 30 ? currentScore + 10 : currentScore + 15);
         checkForWin(match);
-        return match;
     }
 
-    public MatchDto addPointToPlayerTwo(MatchDto match) {
+    public void addPointToPlayerTwo(MatchDto match) {
         int currentScore = match.getScorePlayerTwo();
         match.setScorePlayerTwo(currentScore >= 30 ? currentScore + 10 : currentScore + 15);
         checkForWin(match);
-        return match;
     }
 
     private void checkForWin(MatchDto match) {
@@ -35,17 +33,18 @@ public class MatchCalculationService {
     }
 
     private boolean isSetIsOver(MatchDto match) {
-        if (match.getGameWinsByPlayerOne() >= 6 && match.getGameWinsByPlayerTwo() < 6) {
+        if (match.getGameWinsByPlayerOne() >= 6 && (match.getGameWinsByPlayerOne() - match.getGameWinsByPlayerTwo()) >= 2) {
             int current = match.getSetWinsByPlayerOne();
             match.setSetWinsByPlayerOne(++current);
             return true;
-        } else if (match.getGameWinsByPlayerTwo() >= 6 && match.getGameWinsByPlayerOne() < 6) {
+        } else if (match.getGameWinsByPlayerTwo() >= 6 && (match.getGameWinsByPlayerTwo() - match.getGameWinsByPlayerOne()) >= 2) {
             int current = match.getSetWinsByPlayerTwo();
             match.setSetWinsByPlayerTwo(++current);
             return true;
         }
         return false;
     }
+
 
     private boolean isGameIsOver(MatchDto match) {
         if (match.getScorePlayerOne() > 40 && match.getScorePlayerTwo() < 40) {

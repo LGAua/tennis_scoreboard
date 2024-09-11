@@ -23,6 +23,11 @@ public class ThymeleafUtil {
         templateEngine.process(pageName, webContext, writer);
     }
 
+    public static IWebExchange getWebExchange(HttpServletRequest req, HttpServletResponse resp,ServletContext servletContext) {
+        webApplication = JakartaServletWebApplication.buildApplication(servletContext);
+        return webApplication.buildExchange(req, resp);
+    }
+
     private WebApplicationTemplateResolver getTemplateResolver() {
         WebApplicationTemplateResolver templateResolver = new WebApplicationTemplateResolver(webApplication);
         templateResolver.setPrefix("/WEB-INF/templates/");
@@ -30,10 +35,5 @@ public class ThymeleafUtil {
         templateResolver.setTemplateMode("HTML");
         templateResolver.setCharacterEncoding("UTF-8");
         return templateResolver;
-    }
-
-    public static IWebExchange getWebExchange(HttpServletRequest req, HttpServletResponse resp,ServletContext servletContext) {
-        webApplication = JakartaServletWebApplication.buildApplication(servletContext);
-        return webApplication.buildExchange(req, resp);
     }
 }

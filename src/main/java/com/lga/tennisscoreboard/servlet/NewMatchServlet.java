@@ -5,6 +5,7 @@ import com.lga.tennisscoreboard.entity.Player;
 import com.lga.tennisscoreboard.repository.MatchRepository;
 import com.lga.tennisscoreboard.repository.PlayerRepository;
 import com.lga.tennisscoreboard.service.OngoingMatchesService;
+import com.lga.tennisscoreboard.util.ErrorPage;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -31,6 +32,10 @@ public class NewMatchServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Player playerOne = playerBuilder(req.getParameter("playerOne"));
         Player playerTwo = playerBuilder(req.getParameter("playerTwo"));
+        if (checkNamesUniqueness(playerOne, playerTwo)) {
+            ErrorPage.sendErrorPage("Duplicate names not allowed", req, resp, getServletContext(), resp.getWriter());
+            return;
+        }
 
         savePlayer(playerOne);
         savePlayer(playerTwo);
@@ -55,5 +60,9 @@ public class NewMatchServlet extends HttpServlet {
         if (playerRepository.findPlayerByName(player.getName()).isEmpty()) {
             playerRepository.save(player);
         }
+    }
+
+    private boolean checkNamesUniqueness(Player playerOne, Player playerTwo) {
+        return playerOne.getName().equals(playerTwo.getName());
     }
 }
