@@ -2,9 +2,9 @@ package com.lga.tennisscoreboard.servlet;
 
 import com.lga.tennisscoreboard.dto.MatchDto;
 import com.lga.tennisscoreboard.entity.Player;
-import com.lga.tennisscoreboard.repository.MatchRepository;
 import com.lga.tennisscoreboard.repository.PlayerRepository;
 import com.lga.tennisscoreboard.service.OngoingMatchesService;
+import com.lga.tennisscoreboard.service.PlayerPersistenceService;
 import com.lga.tennisscoreboard.util.ErrorPage;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,17 +15,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
 
+import static com.lga.tennisscoreboard.util.UrlPathStorage.MATCH_SCORE_UUID_PARAM;
+import static com.lga.tennisscoreboard.util.UrlPathStorage.NEW_MATCH_PAGE;
+
 @WebServlet("/new-match")
 public class NewMatchServlet extends HttpServlet {
 
+    private static final String DUPLICATE_NAMES = "Duplicate names not allowed";
+
     private final PlayerRepository playerRepository = new PlayerRepository();
-    private final MatchRepository matchRepository = new MatchRepository();
+    private final PlayerPersistenceService playerPersistenceService = new PlayerPersistenceService();
     private final OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html");
-        req.getRequestDispatcher("/WEB-INF/newMatch.jsp").forward(req, resp);
+        req.getRequestDispatcher(NEW_MATCH_PAGE).forward(req, resp);
     }
 
     @Override
@@ -33,21 +37,16 @@ public class NewMatchServlet extends HttpServlet {
         Player playerOne = playerBuilder(req.getParameter("playerOne"));
         Player playerTwo = playerBuilder(req.getParameter("playerTwo"));
         if (checkNamesUniqueness(playerOne, playerTwo)) {
-            ErrorPage.sendErrorPage("Duplicate names not allowed", req, resp, getServletContext(), resp.getWriter());
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            ErrorPage.sendErrorPage(DUPLICATE_NAMES, req, resp, getServletContext(), resp.getWriter());
             return;
         }
 
-        savePlayer(playerOne);
-        savePlayer(playerTwo);
-
-        MatchDto matchDto = MatchDto.builder()
-                .playerOne(playerOne)
-                .playerTwo(playerTwo)
-                .build();
-
+        savePlayers(playerOne, playerTwo);
+        MatchDto matchDto = matchDtoBuilder(playerOne, playerTwo);
         UUID matchId = ongoingMatchesService.addMatch(matchDto);
 
-        resp.sendRedirect("/match-score?uuid=%s".formatted(matchId.toString()));
+        resp.sendRedirect(MATCH_SCORE_UUID_PARAM.formatted(matchId.toString()));
     }
 
     private Player playerBuilder(String name) {
@@ -56,9 +55,16 @@ public class NewMatchServlet extends HttpServlet {
                 .build();
     }
 
-    private void savePlayer(Player player) {
-        if (playerRepository.findPlayerByName(player.getName()).isEmpty()) {
-            playerRepository.save(player);
+    private MatchDto matchDtoBuilder(Player playerOne, Player playerTwo) {
+        return MatchDto.builder()
+                .playerOne(playerOne)
+                .playerTwo(playerTwo)
+                .build();
+    }
+
+    private void savePlayers(Player... players) {
+        for (Player player : players) {
+            playerPersistenceService.savePlayer(player);
         }
     }
 
