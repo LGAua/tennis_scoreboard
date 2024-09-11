@@ -7,8 +7,6 @@ import java.util.Optional;
 
 public class PlayerRepository extends BaseRepository<Long, Player> {
 
-
-
     public PlayerRepository() {
         super(Player.class);
     }

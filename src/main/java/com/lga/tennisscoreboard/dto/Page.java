@@ -6,11 +6,11 @@ import java.util.List;
 
 @Data
 public class Page<T> {
-    private final List<T> content; // Содержимое текущей страницы
+    private final List<T> content;
 
-    private final int currentPage;  // Номер текущей страницы
+    private final int currentPage;
 
-    private final int totalPages;   // Общее количество страниц
+    private final int totalPages;
 
-    private final long totalElements; // Общее количество элементов
+    private final long totalElements;
 }

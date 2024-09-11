@@ -14,9 +14,4 @@ public interface MatchMapper {
     @Mapping(source = "playerTwo", target = "secondPlayer")
     @Mapping(source = "winner", target = "winner")
     Match mapToMatch(MatchDto matchDto);
-
-    @Mapping(source = "firstPlayer", target = "playerOne")
-    @Mapping(source = "secondPlayer", target = "playerTwo")
-    @Mapping(source = "winner", target = "winner")
-    MatchDto mapToMatchDto(Match match);
 }

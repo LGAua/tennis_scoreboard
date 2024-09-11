@@ -7,6 +7,7 @@
 </head>
 <body>
 <div class="container">
+    <h1 class="error-title" th:text="${status}">Error Message</h1>
     <h1 class="error-title" th:text="${errorMessage}">Error Message</h1>
     <div class="buttons">
         <a class="button" th:href="${sendBack}">Come Back</a>

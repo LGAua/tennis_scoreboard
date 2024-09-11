@@ -1,13 +1,11 @@
 package com.lga.tennisscoreboard.repository;
 
 import com.lga.tennisscoreboard.entity.BaseEntity;
-import com.lga.tennisscoreboard.util.DataImporter;
 import com.lga.tennisscoreboard.util.HibernateUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.internal.SessionImpl;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.hibernate.query.criteria.JpaRoot;
@@ -67,7 +65,7 @@ public abstract class BaseRepository<K extends Serializable, E extends BaseEntit
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             Optional<E> entity = findById(entityId);
-            entity.ifPresent(e -> session.remove(e));
+            entity.ifPresent(session::remove);
             session.getTransaction().commit();
         }
     }

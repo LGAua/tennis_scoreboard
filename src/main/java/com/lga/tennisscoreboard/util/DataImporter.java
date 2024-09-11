@@ -40,19 +40,6 @@ public class DataImporter {
         }
     }
 
-    public static void cleanData() {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-
-            session.createNativeQuery("DELETE FROM matches").executeUpdate();
-            session.createNativeQuery("DELETE FROM players").executeUpdate();
-            session.createNativeQuery("ALTER TABLE matches ALTER COLUMN id RESTART WITH 1").executeUpdate();
-            session.createNativeQuery("ALTER TABLE players ALTER COLUMN id RESTART WITH 1").executeUpdate();
-
-            session.getTransaction().commit();
-        }
-    }
-
     private static Player savePlayer(Session session, String name) {
         Player player = Player.builder().name(name).build();
         session.persist(player);

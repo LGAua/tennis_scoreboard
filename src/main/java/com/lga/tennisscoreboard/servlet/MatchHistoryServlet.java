@@ -2,7 +2,6 @@ package com.lga.tennisscoreboard.servlet;
 
 import com.lga.tennisscoreboard.dto.Page;
 import com.lga.tennisscoreboard.entity.Match;
-import com.lga.tennisscoreboard.repository.MatchRepository;
 import com.lga.tennisscoreboard.service.FinishedMatchesPersistenceService;
 import com.lga.tennisscoreboard.util.ThymeleafUtil;
 import jakarta.servlet.ServletException;
@@ -10,13 +9,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templateresolver.WebApplicationTemplateResolver;
-import org.thymeleaf.web.servlet.IServletWebExchange;
-import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
+
+import static com.lga.tennisscoreboard.util.UrlPathStorage.MATCHES_TEMPLATE_PAGE;
 
 @WebServlet("/matches")
 public class MatchHistoryServlet extends HttpServlet {
@@ -36,7 +33,7 @@ public class MatchHistoryServlet extends HttpServlet {
         webContext.setVariable("totalPages", matches.getTotalPages());
         webContext.setVariable("filterByPlayerName", filterByPlayerName);
 
-        ThymeleafUtil.startRenderingPage("matches", resp.getWriter(), webContext);
+        ThymeleafUtil.startRenderingPage(MATCHES_TEMPLATE_PAGE, resp.getWriter(), webContext);
     }
 }
 

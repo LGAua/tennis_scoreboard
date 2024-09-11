@@ -17,7 +17,7 @@
     <form action="${pageContext.request.contextPath}/new-match" method="post" class="form">
         <div class="form-group">
             <label for="playerOne">Player 1 Name:</label>
-            <input type="text" name="playerOne" id="playerOne" required>
+            <input type="text" name="playerOne" id="playerOne" required >
         </div>
         <div class="form-group">
             <label for="playerTwo">Player 2 Name:</label>

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class OngoingMatchesService {
 
-    private static final Map<UUID, MatchDto> MATCHES = new HashMap();
+    private static final Map<UUID, MatchDto> MATCHES = new HashMap<>();
 
     public UUID addMatch(MatchDto matchDto) {
         UUID uuid = UUID.randomUUID();

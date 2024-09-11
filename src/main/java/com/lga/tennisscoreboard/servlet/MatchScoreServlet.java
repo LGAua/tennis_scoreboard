@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
 
+import static com.lga.tennisscoreboard.util.UrlPathStorage.MATCH_SCORE_PAGE;
+import static com.lga.tennisscoreboard.util.UrlPathStorage.WINNER_PAGE;
+
 @WebServlet("/match-score")
 public class MatchScoreServlet extends HttpServlet {
     private final OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
@@ -24,7 +27,7 @@ public class MatchScoreServlet extends HttpServlet {
         String uuid = req.getParameter("uuid");
         req.setAttribute("uuid", uuid);
         req.setAttribute("match", ongoingMatchesService.getMatch(UUID.fromString(uuid)));
-        req.getRequestDispatcher("/WEB-INF/match-score.jsp").forward(req, resp);
+        req.getRequestDispatcher(MATCH_SCORE_PAGE).forward(req, resp);
     }
 
     @Override
@@ -37,12 +40,12 @@ public class MatchScoreServlet extends HttpServlet {
         if (match.getWinner() == null) {
             req.setAttribute("uuid", uuid);
             req.setAttribute("match", match);
-            req.getRequestDispatcher("/WEB-INF/match-score.jsp").forward(req, resp);
+            req.getRequestDispatcher(MATCH_SCORE_PAGE).forward(req, resp);
         } else {
             matchesPersistenceService.saveMatch(match);
             ongoingMatchesService.finalizeMatch(uuid);
             req.setAttribute("match", match);
-            req.getRequestDispatcher("/WEB-INF/winner-page.jsp").forward(req, resp);
+            req.getRequestDispatcher(WINNER_PAGE).forward(req, resp);
         }
     }
 

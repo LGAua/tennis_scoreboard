@@ -36,13 +36,17 @@ class PlayerRepositoryTest {
 
     @Test
     void findPlayerByName() {
-        Player rogerFederer = playerRepository.findPlayerByName(roger.getName());
-        Player rafaelNadal = playerRepository.findPlayerByName(rafael.getName());
-        Player serenaWilliams = playerRepository.findPlayerByName(serena.getName());
+        Optional<Player> rogerFederer = playerRepository.findPlayerByName(roger.getName());
+        Optional<Player> rafaelNadal = playerRepository.findPlayerByName(rafael.getName());
+        Optional<Player> serenaWilliams = playerRepository.findPlayerByName(serena.getName());
 
-        assertThat(rogerFederer.getId()).isEqualTo(1);
-        assertThat(rafaelNadal.getId()).isEqualTo(2);
-        assertThat(serenaWilliams.getId()).isEqualTo(3);
+        assertThat(rogerFederer).isPresent();
+        assertThat(rafaelNadal).isPresent();
+        assertThat(serenaWilliams).isPresent();
+
+        assertThat(rogerFederer.get().getId()).isEqualTo(1);
+        assertThat(rafaelNadal.get().getId()).isEqualTo(2);
+        assertThat(serenaWilliams.get().getId()).isEqualTo(3);
     }
 
     @Test
