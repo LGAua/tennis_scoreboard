@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error Page</title>
+    <link rel="stylesheet" type="text/css" href="/css/error-page.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="error-title" th:text="${errorMessage}">Error Message</h1>
+    <div class="buttons">
+        <a class="button" th:href="${sendBack}">Come Back</a>
+        <a class="button home-button" th:href="@{/}">Welcome Page</a>
+    </div>
+</div>
+</body>
+</html>
