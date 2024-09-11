@@ -1,7 +1,6 @@
 package com.lga.tennisscoreboard.servlet;
 
 import com.lga.tennisscoreboard.dto.MatchDto;
-import com.lga.tennisscoreboard.entity.Match;
 import com.lga.tennisscoreboard.entity.Player;
 import com.lga.tennisscoreboard.repository.MatchRepository;
 import com.lga.tennisscoreboard.repository.PlayerRepository;

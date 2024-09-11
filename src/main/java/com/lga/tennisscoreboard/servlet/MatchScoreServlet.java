@@ -32,24 +32,25 @@ public class MatchScoreServlet extends HttpServlet {
         UUID uuid = UUID.fromString(req.getParameter("uuid"));
         MatchDto match = ongoingMatchesService.getMatch(uuid);
 
-        addPoint(req,match);
+        addPoint(req, match);
 
-        if (match.getWinner() == null){
+        if (match.getWinner() == null) {
             req.setAttribute("uuid", uuid);
             req.setAttribute("match", match);
             req.getRequestDispatcher("/WEB-INF/match-score.jsp").forward(req, resp);
         } else {
-
+            matchesPersistenceService.saveMatch(match);
+            ongoingMatchesService.finalizeMatch(uuid);
+            req.setAttribute("match", match);
+            req.getRequestDispatcher("/WEB-INF/winner-page.jsp").forward(req, resp);
         }
     }
 
-    private MatchDto addPoint(HttpServletRequest req, MatchDto match) {
-        MatchDto matchDto = null;
+    private void addPoint(HttpServletRequest req, MatchDto match) {
         if (req.getParameterMap().containsKey("playerOne")) {
-            matchDto = matchCalculationService.addPointToPlayerOne(match);
+            matchCalculationService.addPointToPlayerOne(match);
         } else if (req.getParameterMap().containsKey("playerTwo")) {
-            matchDto = matchCalculationService.addPointToPlayerTwo(match);
+            matchCalculationService.addPointToPlayerTwo(match);
         }
-        return matchDto;
     }
 }
