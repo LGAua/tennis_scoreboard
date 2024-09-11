@@ -1,6 +1,7 @@
 package com.lga.tennisscoreboard.repository;
 
 import com.lga.tennisscoreboard.entity.BaseEntity;
+import com.lga.tennisscoreboard.util.DataImporter;
 import com.lga.tennisscoreboard.util.HibernateUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Табло теннисного матча</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/scoreboard-style.css">
+    <link rel="stylesheet" type="text/css" href="/css/scoreboard-style.css">
 </head>
 <body>
 <div class="scoreboard">
