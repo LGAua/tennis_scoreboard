@@ -15,14 +15,14 @@ The app supports searching for matches by player names, making it easy to revisi
 ### Backend 
 
 ![hibernate](img/hibernate.png)
-![jakarta ee](img/jakarta ee.png)
+![jakarta ee](img/jakartaEE.png)
 ![Tools diagram](img/maven.png)
 ### View
 ![Tools diagram](img/thymeleaf.png)
 ![Tools diagram](img/html.png)
 ![Tools diagram](img/css.png)
 ### Data storage
-![Tools diagram](img/h2 database.png)
+![Tools diagram](img/h2Database.png)
 ### Testing
 ![Tools diagram](img/junit5.png)
 
@@ -32,14 +32,14 @@ The app supports searching for matches by player names, making it easy to revisi
 ### 3.1 Welcome page
 The main landing page for the application.
 
-![Welcome page](img/Welcome page.png)
+![Welcome page](img/WelcomePage.png)
 
 ---
 
 ### 3.2 Register Players page
 Allows users to input players for a match.
 
-![Register player page](img/Register player.png)
+![Register player page](img/RegisterPlayer.png)
 
 ---
 
@@ -54,7 +54,7 @@ Tracks scores of the ongoing match in real-time.
 ### 3.4 Match History page
 Displays past matches, with the ability to search by player names.
 
-![Match history](img/match history.png)
+![Match history](img/matchHistory.png)
 
 ---
 
