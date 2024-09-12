@@ -1,8 +1,7 @@
 ## Overview
 
-A web application for managing tennis matches. 
-Users can register players, track scores in real-time, and view match history. 
-The app supports searching for matches by player names, making it easy to revisit previous games.
+A web application for managing tennis matches. Users can register players, track scores in real-time, and view match history. The app supports searching for matches by player names, making it easy to revisit previous games.
+
 ---
 ## 1. Application Features
 
