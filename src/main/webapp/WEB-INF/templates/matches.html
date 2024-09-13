@@ -16,7 +16,7 @@
         <button type="submit">Search</button>
     </form>
 
-    <table>
+    <table th:if="${totalElements > 0}">
         <thead>
         <tr>
             <th>Match ID</th>
@@ -35,11 +35,17 @@
         </tbody>
     </table>
 
+    <h1 th:if="${totalElements == 0}">
+        Player "<u th:text="${filterByPlayerName}"> name</u>" have not played any matches yet
+    </h1>
+
+
+
     <div class="pagination">
         <a th:href="@{/matches(page=${currentPage - 1} ,filter_by_player_name=${filterByPlayerName})}"
            th:if="${currentPage > 1}" class="pagination-button">Previous</a>
 
-        <span class="pagination-info">Page <span th:text="${currentPage}">1</span> of <span th:text="${totalPages}">1</span></span>
+        <span class="pagination-info" th:if="${totalElements > 0}">Page <span th:text="${currentPage}">1</span> of <span th:text="${totalPages}">1</span></span>
 
         <a th:href="@{/matches(page=${currentPage + 1}, filter_by_player_name=${filterByPlayerName})}"
            th:if="${currentPage < totalPages}" class="pagination-button">Next</a>

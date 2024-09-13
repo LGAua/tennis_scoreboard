@@ -31,6 +31,7 @@ public class MatchHistoryServlet extends HttpServlet {
         webContext.setVariable("matches", matches.getContent());
         webContext.setVariable("currentPage", matches.getCurrentPage());
         webContext.setVariable("totalPages", matches.getTotalPages());
+        webContext.setVariable("totalElements", matches.getTotalElements());
         webContext.setVariable("filterByPlayerName", filterByPlayerName);
 
         ThymeleafUtil.startRenderingPage(MATCHES_TEMPLATE_PAGE, resp.getWriter(), webContext);
