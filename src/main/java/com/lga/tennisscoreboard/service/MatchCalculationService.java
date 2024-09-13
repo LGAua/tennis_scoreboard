@@ -1,15 +1,23 @@
 package com.lga.tennisscoreboard.service;
 
 import com.lga.tennisscoreboard.dto.MatchDto;
+import lombok.Getter;
 
 public class MatchCalculationService {
 
     private static final String ADVANTAGE = "AD";
     private static final String GAME_POINT = "GAME";
 
+    private static boolean isTieBreak;
+
     public void addPointToPlayerOne(MatchDto match) {
         if (checkForTieBreak(match)) {
-            increaseScoreTieBreak(match.getScorePlayerOne());
+            match.setScorePlayerOne(increaseScoreTieBreak(match.getScorePlayerOne()));
+            if (match.getScorePlayerOne().equals(ADVANTAGE) && match.getScorePlayerTwo().equals(ADVANTAGE)) {
+                equalizeScoreTieBreak(match);
+            }
+            checkForWin(match);
+            return;
         }
 
         if (match.getScorePlayerOne().equals("40") && match.getScorePlayerTwo().equals(ADVANTAGE)) {
@@ -24,7 +32,12 @@ public class MatchCalculationService {
 
     public void addPointToPlayerTwo(MatchDto match) {
         if (checkForTieBreak(match)) {
-            increaseScoreTieBreak(match.getScorePlayerTwo());
+            match.setScorePlayerTwo(increaseScoreTieBreak(match.getScorePlayerTwo()));
+            if (match.getScorePlayerTwo().equals(ADVANTAGE) && match.getScorePlayerOne().equals(ADVANTAGE)) {
+                equalizeScoreTieBreak(match);
+            }
+            checkForWin(match);
+            return;
         }
 
         if (match.getScorePlayerTwo().equals("40") && match.getScorePlayerOne().equals(ADVANTAGE)) {
@@ -54,6 +67,20 @@ public class MatchCalculationService {
     }
 
     private boolean isSetIsOver(MatchDto match) {
+        if (isTieBreak) {
+            if (match.getGameWinsByPlayerOne() == 7) {
+                int current = match.getSetWinsByPlayerOne();
+                match.setSetWinsByPlayerOne(++current);
+                isTieBreak = false;
+                return true;
+            } else if (match.getGameWinsByPlayerTwo() == 7) {
+                int current = match.getSetWinsByPlayerTwo();
+                match.setSetWinsByPlayerTwo(++current);
+                isTieBreak = false;
+                return true;
+            }
+        }
+
         if (match.getGameWinsByPlayerOne() >= 6 && (match.getGameWinsByPlayerOne() - match.getGameWinsByPlayerTwo()) >= 2) {
             int current = match.getSetWinsByPlayerOne();
             match.setSetWinsByPlayerOne(++current);
@@ -67,6 +94,52 @@ public class MatchCalculationService {
     }
 
     private boolean isGameIsOver(MatchDto match) {
+        if (isTieBreak) {
+            int scorePlayerOne = 0;
+            int scorePlayerTwo = 0;
+
+            if (!match.getScorePlayerOne().equals(ADVANTAGE) && !match.getScorePlayerOne().equals(GAME_POINT)) {
+                scorePlayerOne = Integer.parseInt(match.getScorePlayerOne());
+            }
+
+            if (!match.getScorePlayerTwo().equals(ADVANTAGE) && !match.getScorePlayerTwo().equals(GAME_POINT)) {
+                scorePlayerTwo = Integer.parseInt(match.getScorePlayerTwo());
+            }
+
+
+
+
+            if (match.getScorePlayerOne().equals(ADVANTAGE) && scorePlayerTwo < 7) {
+                int current = match.getGameWinsByPlayerOne();
+                match.setGameWinsByPlayerOne(++current);
+                return true;
+            } else if (match.getScorePlayerTwo().equals(ADVANTAGE) && scorePlayerOne < 7) {
+                int current = match.getGameWinsByPlayerTwo();
+                match.setGameWinsByPlayerTwo(++current);
+                return true;
+            } else if (match.getScorePlayerOne().equals(GAME_POINT) && scorePlayerTwo == 7) {
+                int current = match.getGameWinsByPlayerOne();
+                match.setGameWinsByPlayerOne(++current);
+                return true;
+            } else if (match.getScorePlayerTwo().equals(GAME_POINT) && scorePlayerOne == 7) {
+                int current = match.getGameWinsByPlayerTwo();
+                match.setGameWinsByPlayerTwo(++current);
+                return true;
+            }
+
+            if (scorePlayerOne == 7 && scorePlayerTwo < 6) {
+                int current = match.getGameWinsByPlayerOne();
+                match.setGameWinsByPlayerOne(++current);
+                return true;
+            } else if (scorePlayerTwo == 7 && scorePlayerOne < 6) {
+                int current = match.getGameWinsByPlayerTwo();
+                match.setGameWinsByPlayerTwo(++current);
+                return true;
+            }
+
+            return false;
+        }
+
         int scorePlayerOne = 0;
         int scorePlayerTwo = 0;
 
@@ -101,12 +174,26 @@ public class MatchCalculationService {
     }
 
     private boolean checkForTieBreak(MatchDto match) {
-        return match.getGameWinsByPlayerOne() == 6 && match.getGameWinsByPlayerTwo() == 6;
+        if (match.getGameWinsByPlayerOne() == 6 && match.getGameWinsByPlayerTwo() == 6) {
+            isTieBreak = true;
+            return true;
+        }
+        return false;
     }
 
     private String increaseScoreTieBreak(String currentScore) {
-        int score = Integer.parseInt(currentScore);
-        return String.valueOf(++score);
+        if (currentScore.equals(ADVANTAGE)) {
+            return GAME_POINT;
+        }
+
+        int scoreInteger = Integer.parseInt(currentScore);
+
+        if (scoreInteger < 7) {
+            scoreInteger++;
+            return String.valueOf(scoreInteger);
+        } else {
+            return ADVANTAGE;
+        }
     }
 
     private String increaseScore(String currentScore) {
@@ -127,5 +214,19 @@ public class MatchCalculationService {
     private void equalizeScore(MatchDto match) {
         match.setScorePlayerOne("40");
         match.setScorePlayerTwo("40");
+    }
+
+    private void equalizeScoreTieBreak(MatchDto match) {
+        match.setScorePlayerOne("7");
+        match.setScorePlayerTwo("7");
+    }
+
+
+    public static void setTieBreak(boolean isTieBreak) {
+        MatchCalculationService.isTieBreak = isTieBreak;
+    }
+
+    public boolean getTieBreak() {
+        return isTieBreak;
     }
 }
