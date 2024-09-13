@@ -1,12 +1,13 @@
 package com.lga.tennisscoreboard.service;
 
 import com.lga.tennisscoreboard.dto.MatchDto;
-import lombok.Getter;
 
 public class MatchCalculationService {
 
     private static final String ADVANTAGE = "AD";
     private static final String GAME_POINT = "GAME";
+    private static final int TIE_BREAK_FINAL_SCORE = 7;
+    private static final int REGULAR_GAME_FINAL_SCORE = 40;
 
     private static boolean isTieBreak;
 
@@ -94,55 +95,8 @@ public class MatchCalculationService {
     }
 
     private boolean isGameIsOver(MatchDto match) {
-        if (isTieBreak) {
-            int scorePlayerOne = 0;
-            int scorePlayerTwo = 0;
-
-            if (!match.getScorePlayerOne().equals(ADVANTAGE) && !match.getScorePlayerOne().equals(GAME_POINT)) {
-                scorePlayerOne = Integer.parseInt(match.getScorePlayerOne());
-            }
-
-            if (!match.getScorePlayerTwo().equals(ADVANTAGE) && !match.getScorePlayerTwo().equals(GAME_POINT)) {
-                scorePlayerTwo = Integer.parseInt(match.getScorePlayerTwo());
-            }
-
-
-
-
-            if (match.getScorePlayerOne().equals(ADVANTAGE) && scorePlayerTwo < 7) {
-                int current = match.getGameWinsByPlayerOne();
-                match.setGameWinsByPlayerOne(++current);
-                return true;
-            } else if (match.getScorePlayerTwo().equals(ADVANTAGE) && scorePlayerOne < 7) {
-                int current = match.getGameWinsByPlayerTwo();
-                match.setGameWinsByPlayerTwo(++current);
-                return true;
-            } else if (match.getScorePlayerOne().equals(GAME_POINT) && scorePlayerTwo == 7) {
-                int current = match.getGameWinsByPlayerOne();
-                match.setGameWinsByPlayerOne(++current);
-                return true;
-            } else if (match.getScorePlayerTwo().equals(GAME_POINT) && scorePlayerOne == 7) {
-                int current = match.getGameWinsByPlayerTwo();
-                match.setGameWinsByPlayerTwo(++current);
-                return true;
-            }
-
-            if (scorePlayerOne == 7 && scorePlayerTwo < 6) {
-                int current = match.getGameWinsByPlayerOne();
-                match.setGameWinsByPlayerOne(++current);
-                return true;
-            } else if (scorePlayerTwo == 7 && scorePlayerOne < 6) {
-                int current = match.getGameWinsByPlayerTwo();
-                match.setGameWinsByPlayerTwo(++current);
-                return true;
-            }
-
-            return false;
-        }
-
         int scorePlayerOne = 0;
         int scorePlayerTwo = 0;
-
         if (!match.getScorePlayerOne().equals(ADVANTAGE) && !match.getScorePlayerOne().equals(GAME_POINT)) {
             scorePlayerOne = Integer.parseInt(match.getScorePlayerOne());
         }
@@ -151,25 +105,46 @@ public class MatchCalculationService {
             scorePlayerTwo = Integer.parseInt(match.getScorePlayerTwo());
         }
 
+        if (isTieBreak) {
+            if (isOver(match, scorePlayerTwo, scorePlayerOne, TIE_BREAK_FINAL_SCORE)) {
+                return true;
+            }
 
-        if (match.getScorePlayerOne().equals(ADVANTAGE) && scorePlayerTwo < 40) {
+            if (!match.getScorePlayerOne().equals(ADVANTAGE) && !match.getScorePlayerTwo().equals(ADVANTAGE)) {
+                if (scorePlayerOne == 7 && scorePlayerTwo < 6) {
+                    int current = match.getGameWinsByPlayerOne();
+                    match.setGameWinsByPlayerOne(++current);
+                    return true;
+                } else if (scorePlayerTwo == 7 && scorePlayerOne < 6) {
+                    int current = match.getGameWinsByPlayerTwo();
+                    match.setGameWinsByPlayerTwo(++current);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return isOver(match, scorePlayerTwo, scorePlayerOne, REGULAR_GAME_FINAL_SCORE);
+    }
+
+    private static boolean isOver(MatchDto match, int scorePlayerTwo, int scorePlayerOne, int finalScore) {
+        if (match.getScorePlayerOne().equals(ADVANTAGE) && scorePlayerTwo < finalScore) {
             int current = match.getGameWinsByPlayerOne();
             match.setGameWinsByPlayerOne(++current);
             return true;
-        } else if (match.getScorePlayerTwo().equals(ADVANTAGE) && scorePlayerOne < 40) {
+        } else if (match.getScorePlayerTwo().equals(ADVANTAGE) && scorePlayerOne < finalScore) {
             int current = match.getGameWinsByPlayerTwo();
             match.setGameWinsByPlayerTwo(++current);
             return true;
-        } else if (match.getScorePlayerOne().equals(GAME_POINT) && scorePlayerTwo == 40) {
+        } else if (match.getScorePlayerOne().equals(GAME_POINT) && scorePlayerTwo == finalScore) {
             int current = match.getGameWinsByPlayerOne();
             match.setGameWinsByPlayerOne(++current);
             return true;
-        } else if (match.getScorePlayerTwo().equals(GAME_POINT) && scorePlayerOne == 40) {
+        } else if (match.getScorePlayerTwo().equals(GAME_POINT) && scorePlayerOne == finalScore) {
             int current = match.getGameWinsByPlayerTwo();
             match.setGameWinsByPlayerTwo(++current);
             return true;
         }
-
         return false;
     }
 
@@ -219,9 +194,5 @@ public class MatchCalculationService {
     private void equalizeScoreTieBreak(MatchDto match) {
         match.setScorePlayerOne("7");
         match.setScorePlayerTwo("7");
-    }
-
-    public boolean getTieBreak() {
-        return isTieBreak;
     }
 }
