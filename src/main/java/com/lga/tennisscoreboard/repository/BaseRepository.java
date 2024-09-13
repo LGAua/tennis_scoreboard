@@ -18,7 +18,7 @@ import java.util.Optional;
 public abstract class BaseRepository<K extends Serializable, E extends BaseEntity<K>> implements DaoCrud<K, E> {
 
     @Getter
-    private static SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
+    private static final SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
 
     private final Class<E> clazz;
 

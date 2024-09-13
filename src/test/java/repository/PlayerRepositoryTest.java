@@ -22,7 +22,7 @@ class PlayerRepositoryTest {
     private static final Player newPlayer = Player.builder().name("New Player").build();
     private static final Long NOT_EXISTING_ID = 5L;
 
-    private static PlayerRepository playerRepository = new PlayerRepository();
+    private static final PlayerRepository playerRepository = new PlayerRepository();
 
     @BeforeEach
     void beforeTestExecution() {

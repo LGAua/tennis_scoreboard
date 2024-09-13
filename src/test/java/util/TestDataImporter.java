@@ -28,10 +28,10 @@ public class TestDataImporter {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            session.createNativeQuery("DELETE FROM matches").executeUpdate();
-            session.createNativeQuery("DELETE FROM players").executeUpdate();
-            session.createNativeQuery("ALTER TABLE matches ALTER COLUMN id RESTART WITH 1").executeUpdate();
-            session.createNativeQuery("ALTER TABLE players ALTER COLUMN id RESTART WITH 1").executeUpdate();
+            session.createNativeQuery("DELETE FROM matches", Match.class).executeUpdate();
+            session.createNativeQuery("DELETE FROM players", Player.class).executeUpdate();
+            session.createNativeQuery("ALTER TABLE matches ALTER COLUMN id RESTART WITH 1", Match.class).executeUpdate();
+            session.createNativeQuery("ALTER TABLE players ALTER COLUMN id RESTART WITH 1", Player.class).executeUpdate();
 
             session.getTransaction().commit();
         }
