@@ -3,6 +3,7 @@ package service;
 import com.lga.tennisscoreboard.dto.MatchDto;
 import com.lga.tennisscoreboard.entity.Player;
 import com.lga.tennisscoreboard.service.MatchCalculationService;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,9 +21,19 @@ class MatchCalculationServiceTest {
 
     private final MatchCalculationService calculationService = new MatchCalculationService();
 
-    @ParameterizedTest
-    @MethodSource("paramsForAddPointToPlayerOne")
-    void addPointToPlayerOne(MatchDto matchDto) {
+    @Test
+    void addPointToPlayerOne() {
+        MatchDto matchDto = MatchDto.builder()
+                .playerOne(rafael)
+                .playerTwo(serena)
+                .setWinsByPlayerOne(1)
+                .setWinsByPlayerTwo(1)
+                .gameWinsByPlayerOne(5)
+                .gameWinsByPlayerTwo(0)
+                .scorePlayerOne("40")
+                .scorePlayerTwo("0")
+                .build();
+
         calculationService.addPointToPlayerOne(matchDto);
 
         assertThat(matchDto.getWinner()).isEqualTo(rafael);
@@ -31,9 +42,19 @@ class MatchCalculationServiceTest {
         assertThat(matchDto.getGameWinsByPlayerOne()).isEqualTo(0);
     }
 
-    @ParameterizedTest
-    @MethodSource("paramsForAddPointToPlayerTwo")
-    void addPointToPlayerTwo(MatchDto matchDto) {
+    @Test
+    void addPointToPlayerTwo() {
+        MatchDto matchDto = MatchDto.builder()
+                .playerOne(rafael)
+                .playerTwo(serena)
+                .setWinsByPlayerOne(1)
+                .setWinsByPlayerTwo(1)
+                .gameWinsByPlayerOne(0)
+                .gameWinsByPlayerTwo(5)
+                .scorePlayerOne("0")
+                .scorePlayerTwo("40")
+                .build();
+
         calculationService.addPointToPlayerTwo(matchDto);
 
         assertThat(matchDto.getWinner()).isEqualTo(serena);
@@ -43,18 +64,40 @@ class MatchCalculationServiceTest {
     }
 
 
-    @ParameterizedTest
-    @MethodSource("paramsForCheckForTieBrake")
-    void checkForTieBrake(MatchDto matchDto) {
+    @Test
+    void checkForTieBrake() {
+        MatchDto matchDto = MatchDto.builder()
+                .playerOne(rafael)
+                .playerTwo(serena)
+                .setWinsByPlayerOne(1)
+                .setWinsByPlayerTwo(1)
+                .gameWinsByPlayerOne(6)
+                .gameWinsByPlayerTwo(5)
+                .scorePlayerOne("0")
+                .scorePlayerTwo("40")
+                .build();
+
         calculationService.addPointToPlayerTwo(matchDto);
+
 
         assertThat(matchDto.getSetWinsByPlayerTwo()).isEqualTo(1);
         assertThat(matchDto.getSetWinsByPlayerOne()).isEqualTo(1);
+
     }
 
-    @ParameterizedTest
-    @MethodSource("paramsForCheckForAdvantage")
-    void checkForAdvantage(MatchDto matchDto) throws NoSuchFieldException, IllegalAccessException {
+    @Test
+    void checkForAdvantage() throws NoSuchFieldException, IllegalAccessException {
+        MatchDto matchDto = MatchDto.builder()
+                .playerOne(rafael)
+                .playerTwo(serena)
+                .setWinsByPlayerOne(0)
+                .setWinsByPlayerTwo(0)
+                .gameWinsByPlayerOne(0)
+                .gameWinsByPlayerTwo(0)
+                .scorePlayerOne("40")
+                .scorePlayerTwo("40")
+                .build();
+
         Field declaredField = calculationService.getClass().getDeclaredField("isTieBreak");
         declaredField.setAccessible(true);
         declaredField.set(calculationService,false);
@@ -64,27 +107,56 @@ class MatchCalculationServiceTest {
         assertThat(matchDto.getScorePlayerTwo()).isEqualTo(ADVANTAGE);
     }
 
-    @ParameterizedTest
-    @MethodSource("paramsForCheckForScoreEqualizing")
-    void checkForScoreEqualizing(MatchDto matchDto) {
+    @Test
+    void checkForScoreEqualizing() {
+        MatchDto matchDto = MatchDto.builder()
+                .playerOne(rafael)
+                .playerTwo(serena)
+                .setWinsByPlayerOne(1)
+                .setWinsByPlayerTwo(1)
+                .gameWinsByPlayerOne(0)
+                .gameWinsByPlayerTwo(5)
+                .scorePlayerOne(ADVANTAGE)
+                .scorePlayerTwo("40")
+                .build();
         calculationService.addPointToPlayerTwo(matchDto);
 
         assertThat(matchDto.getScorePlayerOne()).isEqualTo("40");
         assertThat(matchDto.getScorePlayerTwo()).isEqualTo("40");
     }
 
-    @ParameterizedTest
-    @MethodSource("paramsForCheckForScoreEqualizingDuringTieBreak")
-    void checkForScoreEqualizingDuringTieBreak(MatchDto matchDto) {
+    @Test
+    void checkForScoreEqualizingDuringTieBreak() {
+        MatchDto matchDto = MatchDto.builder()
+                .playerOne(rafael)
+                .playerTwo(serena)
+                .setWinsByPlayerOne(0)
+                .setWinsByPlayerTwo(0)
+                .gameWinsByPlayerOne(6)
+                .gameWinsByPlayerTwo(6)
+                .scorePlayerOne(ADVANTAGE)
+                .scorePlayerTwo("7")
+                .build();
+
         calculationService.addPointToPlayerTwo(matchDto);
 
         assertThat(matchDto.getScorePlayerOne()).isEqualTo("7");
         assertThat(matchDto.getScorePlayerTwo()).isEqualTo("7");
     }
 
-    @ParameterizedTest
-    @MethodSource("paramsForCheckForTieBreakScoreLogic")
-    void checkForTieBreakScoreLogic(MatchDto matchDto) {
+    @Test
+    void checkForTieBreakScoreLogic() {
+        MatchDto matchDto = MatchDto.builder()
+                .playerOne(rafael)
+                .playerTwo(serena)
+                .setWinsByPlayerOne(0)
+                .setWinsByPlayerTwo(0)
+                .gameWinsByPlayerOne(6)
+                .gameWinsByPlayerTwo(6)
+                .scorePlayerOne("0")
+                .scorePlayerTwo("0")
+                .build();
+
         calculationService.addPointToPlayerTwo(matchDto);
 
         assertThat(matchDto.getScorePlayerOne()).isEqualTo("0");
@@ -98,104 +170,6 @@ class MatchCalculationServiceTest {
 
         assertThat(matchDto.getSetWinsByPlayerOne()).isEqualTo(0);
         assertThat(matchDto.getSetWinsByPlayerTwo()).isEqualTo(1);
-    }
-
-
-    static Stream<Arguments> paramsForAddPointToPlayerOne() {
-        return Stream.of(
-                Arguments.of(MatchDto.builder()
-                        .playerOne(rafael)
-                        .playerTwo(serena)
-                        .setWinsByPlayerOne(1)
-                        .setWinsByPlayerTwo(1)
-                        .gameWinsByPlayerOne(5)
-                        .gameWinsByPlayerTwo(0)
-                        .scorePlayerOne("40")
-                        .scorePlayerTwo("0")
-                        .build())
-        );
-    }
-
-    static Stream<Arguments> paramsForAddPointToPlayerTwo() {
-        return Stream.of(
-                Arguments.of(MatchDto.builder()
-                        .playerOne(rafael)
-                        .playerTwo(serena)
-                        .setWinsByPlayerOne(1)
-                        .setWinsByPlayerTwo(1)
-                        .gameWinsByPlayerOne(0)
-                        .gameWinsByPlayerTwo(5)
-                        .scorePlayerOne("0")
-                        .scorePlayerTwo("40")
-                        .build())
-        );
-    }
-
-    static Stream<Arguments> paramsForCheckForTieBrake() {
-        return Stream.of(
-                Arguments.of(buildMatchForTieBrakeTest(5, 5))
-        );
-    }
-
-    static Stream<Arguments> paramsForCheckForAdvantage() {
-        return Stream.of(
-                Arguments.of(MatchDto.builder()
-                        .playerOne(rafael)
-                        .playerTwo(serena)
-                        .setWinsByPlayerOne(0)
-                        .setWinsByPlayerTwo(0)
-                        .gameWinsByPlayerOne(0)
-                        .gameWinsByPlayerTwo(0)
-                        .scorePlayerOne("40")
-                        .scorePlayerTwo("40")
-                        .build())
-        );
-    }
-
-    static Stream<Arguments> paramsForCheckForScoreEqualizing() {
-        return Stream.of(
-                Arguments.of(MatchDto.builder()
-                        .playerOne(rafael)
-                        .playerTwo(serena)
-                        .setWinsByPlayerOne(1)
-                        .setWinsByPlayerTwo(1)
-                        .gameWinsByPlayerOne(0)
-                        .gameWinsByPlayerTwo(5)
-                        .scorePlayerOne(ADVANTAGE)
-                        .scorePlayerTwo("40")
-                        .build())
-        );
-    }
-
-    static Stream<Arguments> paramsForCheckForScoreEqualizingDuringTieBreak() {
-        return Stream.of(
-                Arguments.of(MatchDto.builder()
-                        .playerOne(rafael)
-                        .playerTwo(serena)
-                        .setWinsByPlayerOne(0)
-                        .setWinsByPlayerTwo(0)
-                        .gameWinsByPlayerOne(6)
-                        .gameWinsByPlayerTwo(6)
-                        .scorePlayerOne(ADVANTAGE)
-                        .scorePlayerTwo("7")
-                        .build())
-        );
-    }
-
-
-    static Stream<Arguments> paramsForCheckForTieBreakScoreLogic() {
-        return Stream.of(
-                Arguments.of(MatchDto.builder()
-                        .playerOne(rafael)
-                        .playerTwo(serena)
-                        .setWinsByPlayerOne(0)
-                        .setWinsByPlayerTwo(0)
-                        .gameWinsByPlayerOne(6)
-                        .gameWinsByPlayerTwo(6)
-                        .scorePlayerOne("0")
-                        .scorePlayerTwo("0")
-                        .build())
-        );
     }
 
     static Stream<Arguments> paramsForCheckForTieBreakGameFinish() {
@@ -232,18 +206,4 @@ class MatchCalculationServiceTest {
                         .build())
         );
     }
-
-    private static MatchDto buildMatchForTieBrakeTest(int gameWinsByPlayerOne, int gameWinsByPlayerTwo) {
-        return MatchDto.builder()
-                .playerOne(rafael)
-                .playerTwo(serena)
-                .setWinsByPlayerOne(1)
-                .setWinsByPlayerTwo(1)
-                .gameWinsByPlayerOne(gameWinsByPlayerOne)
-                .gameWinsByPlayerTwo(gameWinsByPlayerTwo)
-                .scorePlayerOne("0")
-                .scorePlayerTwo("40")
-                .build();
-    }
-
 }
