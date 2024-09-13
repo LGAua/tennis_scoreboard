@@ -221,11 +221,6 @@ public class MatchCalculationService {
         match.setScorePlayerTwo("7");
     }
 
-
-    public static void setTieBreak(boolean isTieBreak) {
-        MatchCalculationService.isTieBreak = isTieBreak;
-    }
-
     public boolean getTieBreak() {
         return isTieBreak;
     }

@@ -58,7 +58,6 @@ class MatchCalculationServiceTest {
         Field declaredField = calculationService.getClass().getDeclaredField("isTieBreak");
         declaredField.setAccessible(true);
         declaredField.set(calculationService,false);
-//        calculationService.setTieBreak(false);
         calculationService.addPointToPlayerTwo(matchDto);
 
         assertThat(matchDto.getScorePlayerOne()).isEqualTo("40");
