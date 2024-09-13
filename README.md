@@ -56,4 +56,3 @@ Displays past matches, with the ability to search by player names.
 ![Match history](img/matchHistory.png)
 
 ---
-
