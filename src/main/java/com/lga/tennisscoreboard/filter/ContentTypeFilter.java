@@ -15,16 +15,13 @@ import java.nio.charset.StandardCharsets;
 public class ContentTypeFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        // Получаем путь запрашиваемого ресурса
         String path = ((HttpServletRequest) request).getRequestURI();
 
-        // Проверяем, является ли запрос HTML страницей
         if (path.endsWith(".html") || path.endsWith(".jsp")) {
             response.setContentType("text/html");
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         }
 
-        // Продолжаем выполнение фильтра
         chain.doFilter(request, response);
     }
 }

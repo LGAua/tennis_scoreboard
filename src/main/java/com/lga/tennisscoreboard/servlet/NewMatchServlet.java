@@ -59,6 +59,8 @@ public class NewMatchServlet extends HttpServlet {
         return MatchDto.builder()
                 .playerOne(playerOne)
                 .playerTwo(playerTwo)
+                .scorePlayerOne("0")
+                .scorePlayerTwo("0")
                 .build();
     }
 

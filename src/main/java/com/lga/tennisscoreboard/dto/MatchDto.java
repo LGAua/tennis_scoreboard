@@ -19,13 +19,13 @@ public class MatchDto {
 
     Player winner;
 
+    String scorePlayerOne;
+
+    String scorePlayerTwo;
+
     int currentSet;
 
     int currentGame;
-
-    int scorePlayerOne;
-
-    int scorePlayerTwo;
 
     int gameWinsByPlayerOne;
 
