@@ -2,7 +2,6 @@ package com.lga.tennisscoreboard.servlet;
 
 import com.lga.tennisscoreboard.dto.MatchDto;
 import com.lga.tennisscoreboard.entity.Player;
-import com.lga.tennisscoreboard.repository.PlayerRepository;
 import com.lga.tennisscoreboard.service.OngoingMatchesService;
 import com.lga.tennisscoreboard.service.PlayerPersistenceService;
 import com.lga.tennisscoreboard.util.ErrorPage;
@@ -23,7 +22,6 @@ public class NewMatchServlet extends HttpServlet {
 
     private static final String DUPLICATE_NAMES = "Duplicate names not allowed";
 
-    private final PlayerRepository playerRepository = new PlayerRepository();
     private final PlayerPersistenceService playerPersistenceService = new PlayerPersistenceService();
     private final OngoingMatchesService ongoingMatchesService = new OngoingMatchesService();
 
@@ -42,6 +40,11 @@ public class NewMatchServlet extends HttpServlet {
             return;
         }
 
+        if(ongoingMatchesService.isMatchWithSuchPlayerOngoing(playerOne,playerTwo)){
+            UUID matchIdByPlayersName = ongoingMatchesService.getMatchIdByPlayersName(playerOne, playerTwo);
+            resp.sendRedirect(MATCH_SCORE_UUID_PARAM.formatted(matchIdByPlayersName.toString()));
+            return;
+        }
         savePlayers(playerOne, playerTwo);
         MatchDto matchDto = matchDtoBuilder(playerOne, playerTwo);
         UUID matchId = ongoingMatchesService.addMatch(matchDto);
