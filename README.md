@@ -24,6 +24,8 @@ A web application for managing tennis matches. Users can register players, track
 ![Tools diagram](img/h2Database.png)
 ### Testing
 ![Tools diagram](img/junit5.png)
+### Deploy
+![Tools diagram](img/docker.png)
 
 ---
 ## 3. Pages Overview
